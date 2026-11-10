@@ -70,7 +70,8 @@ class Player(pygame.sprite.Sprite):
         """플레이어 위쪽 가운데에서 출발하는 총알 하나를 만들어 돌려준다."""
         # TODO(F2): Bullet(x, y) 를 작성할 것.
         #           x 는 플레이어의 가로 가운데, y 는 플레이어의 위쪽 끝이므로 참고.
-        return None
+        bullet = Bullet(self.rect.centerx,self.rect.y)
+        return bullet
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -84,6 +85,9 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         # TODO(F2): 매 프레임 BULLET_SPEED 만큼 위로 움직이게 할 것.
         #           총알이 화면 위로 완전히 나가면 self.kill() 로 없앨 것.
+        self.rect.y -= BULLET_SPEED
+        if self.rect.y <= 0: #컴퓨터는 위쪽이 0이라 0과 비교
+            self.kill()
         pass
 
 
