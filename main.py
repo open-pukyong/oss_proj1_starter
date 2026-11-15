@@ -77,6 +77,7 @@ class Game:
                     self.all_sprites.add(bullet)
                 # TODO(F2): 스페이스 키를 누르면 self.player.shoot() 으로 총알을 만들어
                 #           self.bullets 와 self.all_sprites 두 그룹에 넣을 것. (게임 오버 중에는 쏘지 않게)
+
                 # TODO(F5): 게임 오버 상태에서 R 키를 누르면 self.reset() 으로 새 판을 시작할 것.
 
     def handle_title_event(self, event):
@@ -107,15 +108,18 @@ class Game:
         self.score += len(hits) * SCORE_PER_ENEMY
         # TODO(F4): 적이 플레이어에 닿으면 그 적을 없애고 생명(self.lives)을 1 줄일 것.
         #           힌트: pygame.sprite.spritecollide
-
+        hits_player = pygame.sprite.spritecollide(self.player,self.enemies,True)
+        if hits_player:
+            self.lives -= len(hits_player)
         # 화면 아래로 지나간 적은 없앨 것.
         for enemy in list(self.enemies):
             if enemy.rect.top > HEIGHT:
                 enemy.kill()
                 # TODO(F4): 적이 아래로 지나갔으니 생명을 1 줄일 것.
-
+                self.lives -= 1
         # TODO(F4): 생명이 0 이하가 되면 self.end_game() 을 실행할 것.
-
+        if self.lives <= 0:
+            self.end_game()
     def end_game(self):
         """게임 오버 처리."""
         self.game_over = True
@@ -159,6 +163,7 @@ class Game:
     def draw_game_over(self):
         """게임 오버 화면. self.game_over 가 True 일 때 draw() 가 부른다."""
         # TODO(F4): 화면 가운데에 "GAME OVER" 와 이번 판 점수를 표시할 것.
+        self.draw_text("GAME OVER", self.big_font, RED , center=(WIDTH // 2, HEIGHT // 2 - 50))
         # TODO(F5): 최고 점수("HIGH SCORE: 300")와 재시작 안내("Press R to restart")도 표시할 것.
         pass
 
