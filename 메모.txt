@@ -9,4 +9,7 @@ feat    구현 항목의 전체 또는 일부를 구현할 때  방향키 이동
 fix     잘못 동작하던 것(버그)을 고칠 때        총알이 화면 밖에서 사라지지 않던 문제 수정
 docs    코드가 아닌 문서만 바꿀 때      README.md 구현 항목 목록 작성
 refactor 동작은 그대로 두고 코드 구조·이름만 정리할 때      충돌 판정 코드를 함수로 분리
-chore 구현과 무관한 설정·관리 작업      .gitignore 추가, 스타터 코드 첫 커밋
+chore 구현과 무관한 정·관리 작업      .gitignore 추가, 스타터 코드 첫 커밋
+
+hits = pygame.sprite.groupcollide(self.players,self.enemies,True)
+했다가 버그남. 11-15
