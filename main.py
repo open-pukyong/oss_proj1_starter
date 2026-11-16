@@ -1,6 +1,6 @@
 """종스크롤 슈팅 게임. 실행: python main.py"""
 import sys
-
+import os
 import pygame
 
 from settings import (
@@ -17,12 +17,19 @@ def load_high_score():
     """HIGHSCORE_FILE 에서 최고 점수를 읽어 돌려준다."""
     # TODO(F5): 파일에서 최고 점수를 읽어 int 로 반환할 것.
     #           파일이 없거나 내용이 숫자가 아니면 0 을 반환할 것.
+    if os.path.exists(HIGHSCORE_FILE):
+        with open(HIGHSCORE_FILE, "r") as f:
+            text = f.read().strip()
+        if text.isdigit():
+            return int(text)
     return 0
 
 
 def save_high_score(score):
     """최고 점수를 HIGHSCORE_FILE 에 저장한다."""
     # TODO(F5): score 를 파일에 저장할 것. (다음 실행 때 load_high_score() 로 읽을 수 있게)
+    with open(HIGHSCORE_FILE, "w") as f:
+        f.write(str(score))
     pass
 
 
@@ -79,6 +86,8 @@ class Game:
                 #           self.bullets 와 self.all_sprites 두 그룹에 넣을 것. (게임 오버 중에는 쏘지 않게)
 
                 # TODO(F5): 게임 오버 상태에서 R 키를 누르면 self.reset() 으로 새 판을 시작할 것.
+                if event.key == pygame.K_r and self.game_over:
+                    self.reset()
 
     def handle_title_event(self, event):
         """시작 화면의 입력: SPACE 면 새 판 시작, ESC 면 종료. (적 생성·발사 없음)"""
@@ -124,7 +133,9 @@ class Game:
         """게임 오버 처리."""
         self.game_over = True
         # TODO(F5): 이번 점수가 최고 점수보다 높으면 self.high_score 를 바꾸고 save_high_score() 로 저장할 것.
-
+        if self.score > self.high_score:
+            self.high_score = self.score
+            save_high_score(self.high_score)
     # ---------------- 그리기 ----------------
     def draw_text(self, text, font, color, **position):
         """글자를 화면에 그린다. 예: self.draw_text("Hi", self.font, WHITE, center=(240, 320))"""
@@ -163,8 +174,11 @@ class Game:
     def draw_game_over(self):
         """게임 오버 화면. self.game_over 가 True 일 때 draw() 가 부른다."""
         # TODO(F4): 화면 가운데에 "GAME OVER" 와 이번 판 점수를 표시할 것.
-        self.draw_text("GAME OVER", self.big_font, RED , center=(WIDTH // 2, HEIGHT // 2 - 50))
+        self.draw_text("GAME OVER", self.big_font, RED , center=(WIDTH // 2, HEIGHT // 2 + 10))
         # TODO(F5): 최고 점수("HIGH SCORE: 300")와 재시작 안내("Press R to restart")도 표시할 것.
+        self.draw_text(f"HIGH SCORE: {self.high_score}", self.big_font, YELLOW, center=(WIDTH // 2, HEIGHT // 2 - 50))
+        self.draw_text("PRESS R TO RESTART", self.font, WHITE, center=(WIDTH // 2, HEIGHT // 2 + 100))
+
         pass
 
     # ---------------- 게임 루프 ----------------
