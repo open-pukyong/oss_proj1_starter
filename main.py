@@ -178,7 +178,7 @@ class Game:
         # TODO(F5): 최고 점수("HIGH SCORE: 300")와 재시작 안내("Press R to restart")도 표시할 것.
         self.draw_text(f"HIGH SCORE: {self.high_score}", self.big_font, YELLOW, center=(WIDTH // 2, HEIGHT // 2 - 50))
         self.draw_text("PRESS R TO RESTART", self.font, WHITE, center=(WIDTH // 2, HEIGHT // 2 + 100))
-
+        self.draw_text(f"HIGH SCORE : {self.high_score}",self.font,WHITE,center=(WIDTH//2,HEIGHT//2 + 120))
         pass
 
     # ---------------- 게임 루프 ----------------
